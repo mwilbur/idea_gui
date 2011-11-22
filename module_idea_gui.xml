@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_idea_gui" default="compile.module.idea_gui">
+  <dirname property="module.idea_gui.basedir" file="${ant.file.module_idea_gui}"/>
+  
+  <property name="module.jdk.home.idea_gui" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.idea_gui" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.idea_gui" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.idea_gui" value="${compiler.args}"/>
+  
+  <property name="idea_gui.output.dir" value="${module.idea_gui.basedir}/out/production/Idea_gui"/>
+  <property name="idea_gui.testoutput.dir" value="${module.idea_gui.basedir}/out/test/Idea_gui"/>
+  
+  <path id="idea_gui.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="idea_gui.module.production.classpath">
+    <path refid="${module.jdk.classpath.idea_gui}"/>
+    <path refid="library.java.classpath"/>
+    <path refid="library.grouplayout.classpath"/>
+  </path>
+  
+  <path id="idea_gui.runtime.production.module.classpath">
+    <pathelement location="${idea_gui.output.dir}"/>
+    <path refid="library.java.classpath"/>
+    <path refid="library.grouplayout.classpath"/>
+  </path>
+  
+  <path id="idea_gui.module.classpath">
+    <path refid="${module.jdk.classpath.idea_gui}"/>
+    <pathelement location="${idea_gui.output.dir}"/>
+    <path refid="library.java.classpath"/>
+    <path refid="library.grouplayout.classpath"/>
+  </path>
+  
+  <path id="idea_gui.runtime.module.classpath">
+    <pathelement location="${idea_gui.testoutput.dir}"/>
+    <pathelement location="${idea_gui.output.dir}"/>
+    <path refid="library.java.classpath"/>
+    <path refid="library.grouplayout.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.idea_gui">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.idea_gui">
+    <patternset refid="excluded.from.module.idea_gui"/>
+  </patternset>
+  
+  <path id="idea_gui.module.sourcepath">
+    <dirset dir="${module.idea_gui.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.idea_gui" depends="compile.module.idea_gui.production,compile.module.idea_gui.tests" description="Compile module Idea_gui"/>
+  
+  <target name="compile.module.idea_gui.production" depends="register.custom.compilers" description="Compile module Idea_gui; production classes">
+    <mkdir dir="${idea_gui.output.dir}"/>
+    <javac2 destdir="${idea_gui.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.idea_gui}/javac">
+      <compilerarg line="${compiler.args.idea_gui}"/>
+      <bootclasspath refid="idea_gui.module.bootclasspath"/>
+      <classpath refid="idea_gui.module.production.classpath"/>
+      <src refid="idea_gui.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.idea_gui"/>
+    </javac2>
+    
+    <copy todir="${idea_gui.output.dir}">
+      <fileset dir="${module.idea_gui.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.idea_gui.tests" depends="register.custom.compilers,compile.module.idea_gui.production" description="compile module Idea_gui; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.idea_gui" description="cleanup module">
+    <delete dir="${idea_gui.output.dir}"/>
+    <delete dir="${idea_gui.testoutput.dir}"/>
+  </target>
+</project>
