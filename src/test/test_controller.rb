@@ -19,8 +19,8 @@ class TestController < ApplicationController
   end
 
   def clear_menu_item_action_performed
-    model.test_text = ""
-    update_view
+    signal :clear_text
+    #update_view
   end
 
   def edit_menu_item_action_performed
